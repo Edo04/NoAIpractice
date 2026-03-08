@@ -1,4 +1,11 @@
 import { Text, View } from "react-native";
+function MoneyItem({ label, amount }: { label: string; amount: number }) {
+  return (
+    <Text>
+      {label}：{amount.toLocaleString()}円
+    </Text>
+  );
+}
 
 export default function Index() {
   let budget = 50000;
@@ -13,9 +20,9 @@ export default function Index() {
       }}
     >
       <Text style={{ fontSize: 24 }}>家計簿アプリへようこそ！</Text>
-      <Text>今月の予算：{budget.toLocaleString()}円</Text>
-      <Text>現在の支出：{expense.toLocaleString()}円</Text>
-      <Text>今月の予算残高：{balance.toLocaleString()}円</Text>
+      <MoneyItem label="今月の予算" amount={budget} />
+      <MoneyItem label="現在の支出" amount={expense} />
+      <MoneyItem label="今月の予算残高" amount={balance} />
     </View>
   );
 }
