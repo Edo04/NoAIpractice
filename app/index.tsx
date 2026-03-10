@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Text, View } from "react-native";
 
 function MoneyItem({ label, amount }: { label: string; amount: number }) {
   return (
@@ -9,12 +9,44 @@ function MoneyItem({ label, amount }: { label: string; amount: number }) {
   );
 }
 
+function CategoryItem({
+  category,
+  budget,
+  expense,
+}: {
+  category: string;
+  budget: number;
+  expense: number;
+}) {
+  return (
+    <View>
+      <Text>{category}</Text>
+      <Text>今月の予算：{budget.toLocaleString()}円</Text>
+      <Text>今月の支出：{expense.toLocaleString()}円</Text>
+    </View>
+  );
+}
+
 export default function Index() {
-  const [budget, setBudget] = useState(50000);
-  const [expense, setExpense] = useState(12000);
-  const balance = budget - expense;
+  const [categories, setCategories] = useState([
+    { category: "食費", budget: 30000, expense: 12000 },
+    { category: "交通費", budget: 20000, expense: 2000 },
+    { category: "固定支出", budget: 40000, expense: 24000 },
+    { category: "その他", budget: 10000, expense: 3000 },
+  ]);
+  const totalBudget = categories.reduce((acc, item) => acc + item.budget, 0);
+  const totalExpense = categories.reduce((acc, item) => acc + item.expense, 0);
+  const balance = totalBudget - totalExpense;
   const [inputBudget, setInputBudget] = useState("");
   const [inputExpense, setInputExpense] = useState("");
+  const categoryList = categories.map((item) => (
+    <CategoryItem
+      key={item.category}
+      category={item.category}
+      budget={item.budget}
+      expense={item.expense}
+    />
+  ));
   return (
     <View
       style={{
@@ -24,27 +56,7 @@ export default function Index() {
       }}
     >
       <Text style={{ fontSize: 24 }}>家計簿アプリへようこそ！</Text>
-      <MoneyItem label="今月の予算" amount={budget} />
-      <MoneyItem label="現在の支出" amount={expense} />
-      <MoneyItem label="今月の予算残高" amount={balance} />
-      <TextInput
-        style={{ borderWidth: 1, width: 200, padding: 8 }}
-        keyboardType="number-pad"
-        onChangeText={(text) => setInputBudget(text)}
-      />
-      <Button
-        title="新しい予算"
-        onPress={() => setBudget(Number(inputBudget))}
-      />
-      <TextInput
-        style={{ borderWidth: 1, width: 200, padding: 8 }}
-        keyboardType="number-pad"
-        onChangeText={(text) => setInputExpense(text)}
-      />
-      <Button
-        title="新しい支出"
-        onPress={() => setExpense(Number(inputExpense))}
-      />
+      {categoryList}
     </View>
   );
 }
