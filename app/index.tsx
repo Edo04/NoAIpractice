@@ -1,13 +1,6 @@
-import { useState } from "react";
+import { Link } from "expo-router";
 import { Text, View } from "react-native";
-
-function MoneyItem({ label, amount }: { label: string; amount: number }) {
-  return (
-    <Text>
-      {label}：{amount.toLocaleString()}円
-    </Text>
-  );
-}
+import { useBudgetStore } from "../store/budgetStore";
 
 function CategoryItem({
   category,
@@ -28,17 +21,10 @@ function CategoryItem({
 }
 
 export default function Index() {
-  const [categories, setCategories] = useState([
-    { category: "食費", budget: 30000, expense: 12000 },
-    { category: "交通費", budget: 20000, expense: 2000 },
-    { category: "固定支出", budget: 40000, expense: 24000 },
-    { category: "その他", budget: 10000, expense: 3000 },
-  ]);
+  const categories = useBudgetStore((state) => state.categories);
   const totalBudget = categories.reduce((acc, item) => acc + item.budget, 0);
   const totalExpense = categories.reduce((acc, item) => acc + item.expense, 0);
   const balance = totalBudget - totalExpense;
-  const [inputBudget, setInputBudget] = useState("");
-  const [inputExpense, setInputExpense] = useState("");
   const categoryList = categories.map((item) => (
     <CategoryItem
       key={item.category}
@@ -57,6 +43,8 @@ export default function Index() {
     >
       <Text style={{ fontSize: 24 }}>家計簿アプリへようこそ！</Text>
       {categoryList}
+      <Text>今月の残高：{balance.toLocaleString()}円</Text>
+      <Link href="/list">一覧画面へ</Link>
     </View>
   );
 }
