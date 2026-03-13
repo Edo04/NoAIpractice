@@ -8,6 +8,7 @@ type Category = {
 
 type BudgetStore = {
   categories: Category[];
+  addCategory: (category: Category) => void;
 };
 
 export const useBudgetStore = create<BudgetStore>()((set) => ({
@@ -17,4 +18,8 @@ export const useBudgetStore = create<BudgetStore>()((set) => ({
     { category: "固定支出", budget: 40000, expense: 24000 },
     { category: "その他", budget: 10000, expense: 3000 },
   ],
+
+  addCategory: (category) => {
+    set((state) => ({ categories: [...state.categories, category] }));
+  },
 }));

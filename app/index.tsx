@@ -17,6 +17,7 @@ export default function Index() {
       }}
     >
       <Text style={{ fontSize: 24 }}>家計簿アプリへようこそ！</Text>
+      <Link href="/add">予算を追加する</Link>
       <Text>今月の予算：{totalBudget.toLocaleString()}円</Text>
       <Text>今月の支出：{totalExpense.toLocaleString()}円</Text>
       <Text>今月の残高：{balance.toLocaleString()}円</Text>
